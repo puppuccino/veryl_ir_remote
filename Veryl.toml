@@ -1,0 +1,9 @@
+[project]
+name = "veryl_rv32i"
+version = "0.1.0"
+
+[build]
+clock_type = "posedge"
+reset_type = "async_low"
+target = { type = "directory", path = "output" }
+omit_project_prefix = true
