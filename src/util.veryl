@@ -1,0 +1,27 @@
+// util package
+pub package util {
+    enum Optype: logic<3> {
+        R,
+        I,
+        S,
+        U,
+        J,
+        B,
+    }
+
+    function add (
+        rd : input logic<5> ,
+        rs1: input logic<5> ,
+        rs2: input logic<5> ,
+    ) -> logic<32> {
+        return {7'b000_0000, rs2, rs1, 3'b000, rd, 7'b0110011};
+    }
+
+    function addi (
+        rd : input logic<5> ,
+        rs1: input logic<5> ,
+        imm: input logic<12>,
+    ) -> logic<32> {
+        return {imm, rs1, 3'b000, rd, 7'b0010011};
+    }
+}

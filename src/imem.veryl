@@ -1,0 +1,23 @@
+// instruction memory
+
+import util::add;
+import util::addi;
+
+module imem (
+    i_pc  : input  logic<32>,
+    o_inst: output logic<32>,
+) {
+    always_comb {
+        let x0: logic<5> = 5'd0;
+        let x1: logic<5> = 5'd1;
+        let x2: logic<5> = 5'd2;
+        let x3: logic<5> = 5'd3;
+
+        o_inst = case i_pc {
+            32'h0  : addi(x1, x0, 3),
+            32'h4  : addi(x2, x1, 4),
+            32'h8  : add(x3, x2, x1),
+            default: 32'b0,
+        };
+    }
+}

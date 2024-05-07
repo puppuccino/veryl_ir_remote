@@ -1,0 +1,43 @@
+module register (
+    i_clk         : input  clock    ,
+    i_rst         : input  reset    ,
+    i_instruction : input  logic<32>,
+    i_write_enable: input  logic    ,
+    i_write_data  : input  logic<32>,
+    o_rs1         : output logic<32>,
+    o_rs2         : output logic<32>,
+) {
+
+    var mem: logic<32> [32];
+
+    // read is combinational
+    always_comb {
+        let rs1_index: logic<5> = i_instruction[19:15];
+        let rs2_index: logic<5> = i_instruction[24:20];
+
+        if rs1_index == 0 {
+            o_rs1 = 0; // x0 is always 0
+        } else {
+            o_rs1 = mem[rs1_index];
+        }
+
+        if rs2_index == 0 {
+            o_rs2 = 0; // x0 is always 0
+        } else {
+            o_rs2 = mem[rs2_index];
+        }
+
+    }
+
+    // write is synchronous
+    always_ff (i_clk, i_rst) {
+        if_reset {
+            mem = '{32'b0 repeat 32};
+        } else {
+            if i_write_enable {
+                let write_index     : logic<5> = i_instruction[11:7];
+                mem[write_index] = i_write_data;
+            }
+        }
+    }
+}

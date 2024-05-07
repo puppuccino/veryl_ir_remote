@@ -1,0 +1,8 @@
+// just a simple adder for now
+module alu (
+    i_op1: input  logic<32>,
+    i_op2: input  logic<32>,
+    o_res: output logic<32>,
+) {
+    assign o_res = i_op1 + i_op2;
+}
