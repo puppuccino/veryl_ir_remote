@@ -1,3 +1,5 @@
 Veryl.lock
 veryl_rv32i.f
 output
+obj_dir
+*.fst
