@@ -24,4 +24,8 @@ pub package util {
     ) -> logic<32> {
         return {imm, rs1, 3'b000, rd, 7'b0010011};
     }
+
+    function nop () -> logic<32> {
+        return add(5'd0, 5'd0, 5'd0);
+    }
 }
