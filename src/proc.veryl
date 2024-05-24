@@ -1,6 +1,6 @@
 /// simple processor
 import util::Optype;
-module proc (
+pub module proc (
     i_clk: input clock,
     i_rst: input reset,
 ) {

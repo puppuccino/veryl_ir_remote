@@ -1,4 +1,4 @@
-module register (
+pub module register (
     i_clk         : input  clock    ,
     i_rst         : input  reset    ,
     i_instruction : input  logic<32>,

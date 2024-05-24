@@ -3,7 +3,7 @@
 import util::add;
 import util::addi;
 
-module imem (
+pub module imem (
     i_pc  : input  logic<32>,
     o_inst: output logic<32>,
 ) {
