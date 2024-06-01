@@ -25,6 +25,14 @@ pub package util {
         return {imm, rs1, 3'b000, rd, 7'b0010011};
     }
 
+    function lw (
+        rd : input logic<5> ,
+        rs1: input logic<5> ,
+        imm: input logic<12>,
+    ) -> logic<32> {
+        return {imm, rs1, 3'b010, rd, 7'b0000011};
+    }
+
     function nop () -> logic<32> {
         return add(5'd0, 5'd0, 5'd0);
     }
