@@ -82,7 +82,7 @@ pub module proc (
     // ===============================================================================
     // memory access
 
-    var w_loaded: logic;
+    var w_loaded: logic<32>;
     inst u_dmem: dmem (
         clk              ,
         rst              ,

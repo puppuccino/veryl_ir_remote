@@ -1,12 +1,16 @@
+//package util;
+//endpackage
+
 module testbench;
+  import util::*;
 
   // Signals declaration
   reg clk;
   reg rst;
 
   proc u_proc (
-      .i_clk(clk),
-      .i_rst(rst)
+      .clk(clk),
+      .rst(rst)
   );
 
   // Clock generation
