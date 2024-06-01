@@ -1,18 +1,17 @@
 /// simple processor
 import util::Optype;
 pub module proc (
-    i_clk: input clock,
-    i_rst: input reset,
+    clk: input clock,
+    rst: input reset,
 ) {
 
     // ===============================================================================
     // instruction fetch
-    var r_pc    : logic <32>; // program counter
-    var w_ir    : logic <32>; // instruction
-    var w_optype: Optype    ; // instruction type
-    var w_imm   : logic <32>; // immediate value
+    var r_pc : logic<32>; // program counter
+    var w_ir : logic<32>; // instruction
+    var w_imm: logic<32>; // immediate value
 
-    always_ff (i_clk, i_rst) {
+    always_ff (clk, rst) {
         if_reset {
             r_pc = 32'b0;
         } else {
@@ -25,10 +24,23 @@ pub module proc (
         o_inst: w_ir,
     );
 
+    var is_jtype: logic;
+    var is_btype: logic;
+    var is_stype: logic;
+    var is_utype: logic;
+    var is_itype: logic;
+    var is_rtype: logic;
+    var is_load : logic;
     inst u_get_imm32_and_optype: get_imm32_and_optype (
-        i_insn  : w_ir    ,
-        o_imm   : w_imm   ,
-        o_optype: w_optype,
+        i_insn  : w_ir ,
+        o_imm   : w_imm,
+        is_jtype       ,
+        is_btype       ,
+        is_stype       ,
+        is_utype       ,
+        is_itype       ,
+        is_rtype       ,
+        is_load        ,
     );
 
 
@@ -40,10 +52,10 @@ pub module proc (
     var w_write_data: logic<32>;
 
     inst u_reg: register (
-        i_clk                       ,
-        i_rst                       ,
+        clk                         ,
+        rst                         ,
         i_instruction : w_ir        ,
-        i_write_enable: 1'b1        , // write enable is 1'b1 for now
+        i_write_enable: is_load     ,
         i_write_data  : w_write_data,
         o_rs1         : w_rs1       ,
         o_rs2         : w_rs2       ,
@@ -54,11 +66,12 @@ pub module proc (
     // just a simple adder for now
 
     var w_rs2_imm: logic<32>;
-    assign w_rs2_imm = if (w_optype == Optype::I) {
+    assign w_rs2_imm = if is_itype {
         w_imm
     } else {
         w_rs2
     };
+
     var w_alu_result: logic<32>;
     inst u_alu: alu (
         i_op1: w_rs1       ,

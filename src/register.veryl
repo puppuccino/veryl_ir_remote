@@ -1,6 +1,6 @@
 pub module register (
-    i_clk         : input  clock    ,
-    i_rst         : input  reset    ,
+    clk           : input  clock    ,
+    rst           : input  reset    ,
     i_instruction : input  logic<32>,
     i_write_enable: input  logic    ,
     i_write_data  : input  logic<32>,
@@ -30,7 +30,7 @@ pub module register (
     }
 
     // write is synchronous
-    always_ff (i_clk, i_rst) {
+    always_ff (clk, rst) {
         if_reset {
             mem = '{32'b0 repeat 32};
         } else {
