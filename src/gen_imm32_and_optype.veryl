@@ -1,0 +1,39 @@
+pub module get_imm32_and_optype (
+    i_insn  : input  logic<32>,
+    o_imm   : output logic<32>,
+    is_jtype: output logic    ,
+    is_btype: output logic    ,
+    is_stype: output logic    ,
+    is_rtype: output logic    ,
+    is_utype: output logic    ,
+    is_itype: output logic    ,
+    is_load : output logic    ,
+) {
+
+    always_comb {
+        o_imm = if is_itype {
+            {i_insn[31] repeat 20, i_insn[31:20]} // cast to 32 bits
+        } else if is_stype {
+            {i_insn[31] repeat 20, i_insn[31:25], i_insn[11:7]}
+        } else if is_utype {
+            {i_insn[31:12], 12'b0}
+        } else if is_jtype {
+            {i_insn[31] repeat 11, i_insn[31], i_insn[19:12], i_insn[20], i_insn[30:21], 1'b0}
+        } else if is_btype {
+            {i_insn[31] repeat 19, i_insn[31], i_insn[7], i_insn[30:25], i_insn[11:8], 1'b0}
+        } else {
+            32'b0 // rtype
+        };
+    }
+
+    always_comb {
+        is_rtype = i_insn[6:0] == 7'b011_0011;
+        is_stype = i_insn[6:0] == 7'b010_0011;
+        is_jtype = i_insn[6:0] == 7'b110_1111;
+        is_btype = i_insn[6:0] == 7'b110_0011;
+        is_utype = i_insn[6:0] == 7'b011_0111 || i_insn[6:0] == 7'b001_0111;
+        is_itype = !is_rtype && !is_stype && !is_jtype && !is_btype && !is_utype;
+        is_load  = is_itype && (i_insn[6:0] == 7'b000_0011);
+    }
+
+}
