@@ -80,8 +80,25 @@ pub module proc (
     );
 
     // ===============================================================================
+    // memory access
+
+    var w_loaded: logic;
+    inst u_dmem: dmem (
+        clk              ,
+        rst              ,
+        adr: w_alu_result,
+        wd : w_imm       ,
+        we : is_stype    ,
+        rd : w_loaded    ,
+    );
+
+    // ===============================================================================
     // write back
 
-    assign w_write_data = w_alu_result;
+    assign w_write_data = if is_load {
+        w_loaded
+    } else {
+        w_alu_result
+    };
 
 }

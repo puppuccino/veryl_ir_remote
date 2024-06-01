@@ -1,0 +1,28 @@
+/// A simple data memory module with 1024 32-bit words.
+module dmem (
+    clk: input  clock    ,
+    rst: input  reset    ,
+    adr: input  logic<32>, /// write address
+    wd : input  logic<32>, /// write data
+    we : input  logic    , /// write enable
+    rd : output logic<32>, /// read data
+) {
+
+    var mem: logic<32> [1024];
+
+    // read data is asynchronous
+    always_comb {
+        rd = mem[adr];
+    }
+
+    // write data is synchronous
+    always_ff (clk, rst) {
+        if_reset {
+            for i: u32 in 0..1024 {
+                mem[i] = 0;
+            }
+        } else if (we) {
+            mem[adr] = wd;
+        }
+    }
+}
