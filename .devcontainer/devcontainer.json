@@ -8,6 +8,17 @@
 		// "ghcr.io/devcontainers/features/rust:1": {},
 		"ghcr.io/veryl-lang/devcontainer-features/verilator:1": {},
 		"ghcr.io/veryl-lang/devcontainer-features/veryl:1": {}
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"bmpenuelas.systemverilog-formatter-vscode",
+				"eirikpre.systemverilog"
+			],
+			"settings": {
+				"systemverilogFormatter.veribleBuild":"Ubuntu-20.04-focal-x86_64"
+			}
+		}
 	}
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
